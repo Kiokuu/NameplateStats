@@ -1,9 +1,6 @@
-﻿using MelonLoader;
-
-namespace NameplateStats
+﻿namespace NameplateStats
 {
-    using UnhollowerRuntimeLib;
-    using UnityEngine;
+    using MelonLoader;
 
     public class Main : MelonMod
     {
@@ -26,10 +23,13 @@ namespace NameplateStats
                 if (_scenesLoaded == 2) // UiManagerInit
                 {
                     Nameplate.Start();
+                    Prefs.ForceUpdateListeners();
                     _scenesLoaded=null;
                 }
             }
             else Nameplate.OnSceneChanged(); //Wipe playerlist because changing worlds
         }
+
+        public override void OnPreferencesSaved() => Prefs.UpdateListeners();
     }
 }

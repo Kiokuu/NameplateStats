@@ -1,6 +1,7 @@
 ﻿namespace NameplateStats
 {
     using System;
+    using Dawn.Utilities;
     using MelonLoader;
     using UnhollowerRuntimeLib;
 
@@ -11,7 +12,37 @@
             ClassInjector.RegisterTypeInIl2Cpp<NameplateStatsManager>();
             ClassInjector.RegisterTypeInIl2Cpp<ObjectListener>();
             RegisterPreferences();
+
+            EnabledListener = new PreferencesStateListener(Enabled, () => { }, () => { });
+            PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
+            FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
+            DynamicResizingListener = new PreferencesStateListener(DynamicResizing, () => { }, () => { });
+            DynamicColourListener = new PreferencesStateListener(DynamicColour, () => { }, () => { });
         }
+
+        public static void ForceUpdateListeners()
+        {
+            EnabledListener.ForceUpdate(Enabled);
+            PingListener.ForceUpdate(Ping);
+            FPSListener.ForceUpdate(FPS);
+            DynamicResizingListener.ForceUpdate(DynamicResizing);
+            DynamicColourListener.ForceUpdate(DynamicColour);
+        }
+        public static void UpdateListeners()
+        {
+            EnabledListener.Update(Enabled);
+            PingListener.Update(Ping);
+            FPSListener.Update(FPS);
+            DynamicResizingListener.Update(DynamicResizing);
+            DynamicColourListener.Update(DynamicColour);
+        }
+
+        private static PreferencesStateListener EnabledListener;
+        private static PreferencesStateListener PingListener;
+        private static PreferencesStateListener FPSListener;
+        private static PreferencesStateListener DynamicResizingListener;
+        private static PreferencesStateListener DynamicColourListener;
+        
 
         private static void RegisterPreferences()
         {
