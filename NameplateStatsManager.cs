@@ -12,6 +12,12 @@
     {
         public NameplateStatsManager(IntPtr ptr) : base(ptr) {}
 
+
+        private void Start()
+        {
+            MelonLogger.Msg("Starting 'NameplateStatsManager'");
+        }
+
         private DateTime intervalCheck;
         private void LateUpdate()
         {
@@ -21,6 +27,18 @@
             NameplateUpdate();
         }
 
+        private void OnDisable()
+        {
+            if (EntriesToRemove.Count > 0)
+            {
+                foreach (VRCPlayer player in EntriesToRemove)
+                {
+                    PlayerText.Remove(player);
+                }
+            }
+        }
+
+        [HideFromIl2Cpp]
         private void NameplateUpdate()
         {
             if (EntriesToRemove.Count > 0)
@@ -79,6 +97,7 @@
         [HideFromIl2Cpp]
         public bool QuickMenuOpen
         {
+            [HideFromIl2Cpp]
             set
             {
                 if (value) OnQMOpen();
