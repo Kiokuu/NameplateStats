@@ -18,12 +18,11 @@
             MelonLogger.Msg("Starting 'NameplateStatsManager'");
         }
 
-        private DateTime intervalCheck;
+        private DateTime intervalCheck = DateTime.UtcNow;
         private void LateUpdate()
         {
             if (DateTime.UtcNow < intervalCheck) return;
             intervalCheck = DateTime.UtcNow.AddMilliseconds(Prefs.UpdateTime);
-            
             NameplateUpdate();
         }
 
@@ -58,7 +57,7 @@
                 {
                     if (keyPair.Key._player == null)
                     {
-                        //MelonLogger.Msg("Removing player");
+                        MelonLogger.Msg("Removing player");
                         EntriesToRemove.Add(keyPair.Key);
                     }
 
@@ -67,8 +66,8 @@
 
 
                 //var cacheValue = keyPair.Value.transform.Find("Text").gameObject;
-                var cacheFPSText = keyPair.Value.transform.Find("Trust Text").gameObject;
-                var cachePingText = keyPair.Value.transform.Find("Performance Text").gameObject;
+                var cacheFPSText = keyPair.Value.transform.Find("FPS Text").gameObject;
+                var cachePingText = keyPair.Value.transform.Find("Ping Text").gameObject;
                 var cacheNet = keyPair.Key._playerNet;
                 if (cacheFPSText.active && cachePingText.active)
                 {

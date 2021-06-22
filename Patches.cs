@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using MelonLoader;
 
 namespace NameplateStats
 {
@@ -12,7 +14,8 @@ namespace NameplateStats
             harmonyInstance.Patch(typeof(VRCPlayer).GetMethod("Awake"),
                 postfix: new HarmonyMethod(typeof(Patches).GetMethod(nameof(OnVRCPlayerAwake)))
             );
-            
+            MelonLogger.Msg($"Patched VRCPlayer.Awake()");
+
             var nameplateMethods = typeof(PlayerNameplate).GetMethods(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.Name.StartsWith("Method_Public_Void_") && x.Name.Length == 20);
 
@@ -21,6 +24,8 @@ namespace NameplateStats
                 harmonyInstance.Patch(method,
                     postfix: new HarmonyMethod(typeof(Patches).GetMethod(nameof(NameplateBlanketPatch))));
             }
+            
+            MelonLogger.Msg($"Patched Nameplate Methods: {String.Join(", ",nameplateMethods.Select(methodName=>methodName.Name))}");
         }
         
         //"borrowed" from nameplate king https://github.com/ddakebono/BTKSANameplateFix/blob/6a150d520e6a49e2e1ea3484ec673899380f9ccb/BTKSANameplateMod.cs#L715

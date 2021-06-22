@@ -65,13 +65,17 @@
           <HintPath>..\Libs\Managed\VRCCore-Standalone.dll</HintPath>
         </Reference>
     </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Main.cs" />
-        <Compile Include="Nameplate.cs" />
-        <Compile Include="Patches.cs" />
-        <Compile Include="Prefs.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
+	<ItemGroup>
+		<Compile Include="Main.cs" />
+		<Compile Include="Managers.cs" />
+		<Compile Include="Nameplate.cs" />
+		<Compile Include="NameplateStatsManager.cs" />
+		<Compile Include="ObjectListener.cs" />
+		<Compile Include="Patches.cs" />
+		<Compile Include="PreferenceStateListener.cs" />
+		<Compile Include="Prefs.cs" />
+		<Compile Include="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
