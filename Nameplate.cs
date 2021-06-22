@@ -22,7 +22,7 @@ namespace NameplateStats
             MelonCoroutines.Start(UpdateNameplateText());
         }
         
-        private static bool AdditionalChecks(VRCPlayer player)
+        public static bool AdditionalChecks(VRCPlayer player)
         {
             return !(player == null || player.field_Public_PlayerNameplate_0 == null);
         }
