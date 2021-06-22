@@ -28,6 +28,6 @@ Additionally, reference the following library;
 Finally, build in your favourite IDE.
 
 ## Credits
-[Dawn](https://github.com/Arion-Kun) - Optimization, Moral support, general guidance, qt
-[DDAkebono](https://github.com/ddakebono) - Heavily referenced the code from [BTSKANameplateFix](https://github.com/ddakebono/BTKSANameplateFix)
+* [Dawn](https://github.com/Arion-Kun) - Optimization, Moral support, general guidance, qt
+* [DDAkebono](https://github.com/ddakebono) - Heavily referenced the code from [BTSKANameplateFix](https://github.com/ddakebono/BTKSANameplateFix)
 
