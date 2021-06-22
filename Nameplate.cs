@@ -16,8 +16,7 @@ namespace NameplateStats
         public static bool Locked = false;
         public static void Start()
         {
-            
-            MelonLogger.Msg("Starting Module Nameplates");
+            MelonLogger.Msg("Starting 'Nameplates'");
             Managers.Start();
         }
         
@@ -32,13 +31,15 @@ namespace NameplateStats
                 if (!PingFPSObjectRef)
                 {
                     GameObject temp = playerNameplate.transform.Find("Contents/Quick Stats").gameObject;
-                    //MelonLogger.Msg($"{temp.name}");
 
                     PingFPSObjectRef = UnityEngine.Object.Instantiate(temp);
                     Object.DestroyImmediate(PingFPSObjectRef.transform.Find("Trust Icon").gameObject);
                     Object.DestroyImmediate(PingFPSObjectRef.transform.Find("Performance Icon").gameObject);
                     Object.DestroyImmediate(PingFPSObjectRef.transform.Find("Friend Anchor Stats").gameObject);
 
+                    PingFPSObjectRef.transform.Find("Trust Text").name = "FPS Text";
+                    PingFPSObjectRef.transform.Find("Performance Text").name = "Ping Text";
+                    
                     PingFPSObjectRef.name = "FPSPingReference";
                     PingFPSObjectRef.SetActive(false);
                 }
@@ -52,17 +53,17 @@ namespace NameplateStats
                     
                     newStuff.transform.localPosition = new Vector3(0, 60, 0);
                     
-                    var text = newStuff.transform.Find("Trust Text").GetComponent<TextMeshProUGUI>();
+                    var text = newStuff.transform.Find("FPS Text").GetComponent<TextMeshProUGUI>();
                     text.text = "FPS:000";
                     text.color = Color.green;
 
-                    text = newStuff.transform.Find("Performance Text").GetComponent<TextMeshProUGUI>();
+                    text = newStuff.transform.Find("Ping Text").GetComponent<TextMeshProUGUI>();
                     text.text = "Ping:0000";
                     text.color = Color.green;
                     
                     newStuff.SetActive(true);
                     PlayerText.Add(player, newStuff);
-                    //MelonLogger.Msg($"Added {player._player.name}");
+                    MelonLogger.Msg($"Added {player._player.name}");
                 }
             }
 

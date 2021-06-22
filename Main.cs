@@ -6,7 +6,7 @@
     {
         public static Main Instance { get; private set; }
 
-        private byte? _scenesLoaded;
+        private byte? _scenesLoaded = 0;
         
         public override void OnApplicationStart()
         {
