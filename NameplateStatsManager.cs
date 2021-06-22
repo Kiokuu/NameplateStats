@@ -8,7 +8,15 @@
     {
         public NameplateStatsManager(IntPtr ptr) : base(ptr) {}
 
+        private DateTime intervalCheck;
         private void LateUpdate()
+        {
+            if (DateTime.UtcNow < intervalCheck) return;
+            intervalCheck = DateTime.UtcNow.AddMilliseconds(Prefs.UpdateTime);
+            NameplateUpdate();
+        }
+
+        private void NameplateUpdate()
         {
             
         }

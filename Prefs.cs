@@ -9,7 +9,7 @@
         public static void OnStart()
         {
             ClassInjector.RegisterTypeInIl2Cpp<NameplateStatsManager>();
-
+            ClassInjector.RegisterTypeInIl2Cpp<ObjectListener>();
             RegisterPreferences();
         }
 
