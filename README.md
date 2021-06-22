@@ -1,4 +1,4 @@
-#NameplateStats
+# NameplateStats
 A VRChat [MelonLoader](https://github.com/LavaGang/MelonLoader) which aims to add statisics ontop of players nameplates!
 
 ## Features
