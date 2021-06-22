@@ -11,14 +11,17 @@ namespace NameplateStats
     {
         public static GameObject PingFPSObjectRef;
 
-        public static Dictionary<VRCPlayer, GameObject> PlayerText = new();
-        public static List<VRCPlayer> EntriesToRemove = new();
+        public static readonly Dictionary<VRCPlayer, GameObject> PlayerText = new();
+        public static readonly HashSet<VRCPlayer> EntriesToRemove = new();
         public static bool Locked = false;
         public static void Start()
         {
+            Managers.Start();
+            
             MelonLogger.Msg("Starting Module Nameplates");
             MelonCoroutines.Start(UpdateNameplateText());
         }
+        
         private static bool AdditionalChecks(VRCPlayer player)
         {
             return !(player == null || player.field_Public_PlayerNameplate_0 == null);
