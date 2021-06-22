@@ -11,18 +11,17 @@ namespace NameplateStats
     {
         public static GameObject PingFPSObjectRef;
 
-        public static Dictionary<VRCPlayer, GameObject> PlayerText = new();
-        public static List<VRCPlayer> EntriesToRemove = new();
+        public static readonly Dictionary<VRCPlayer, GameObject> PlayerText = new();
+        public static readonly HashSet<VRCPlayer> EntriesToRemove = new();
         public static bool Locked = false;
         public static void Start()
         {
+            
             MelonLogger.Msg("Starting Module Nameplates");
-            MelonCoroutines.Start(UpdateNameplateText());
+            Managers.Start();
         }
-        private static bool AdditionalChecks(VRCPlayer player)
-        {
-            return !(player == null || player.field_Public_PlayerNameplate_0 == null);
-        }
+        
+        public static bool AdditionalChecks(VRCPlayer player) => !(player == null || player.field_Public_PlayerNameplate_0 == null);
         
         public static void OnAvatarReady(VRCPlayer player)
         {
@@ -67,53 +66,6 @@ namespace NameplateStats
                 }
             }
 
-        }
-
-        public static IEnumerator UpdateNameplateText()
-        {
-            while (true)
-            {
-                if (EntriesToRemove.Count > 0)
-                {
-                    foreach (VRCPlayer player in EntriesToRemove)
-                    {
-                        PlayerText.Remove(player);
-                    }
-                }
-                if (Locked) yield return new WaitForSeconds(1);
- 
-                
-                foreach (KeyValuePair<VRCPlayer, GameObject> keyPair in PlayerText)
-                {
-                    if (!AdditionalChecks(keyPair.Key))
-                    {
-                        if (keyPair.Key._player == null)
-                        {
-                            //MelonLogger.Msg("Removing player");
-                            EntriesToRemove.Add(keyPair.Key);
-                        }
-
-                        continue;
-                    }
-
-
-                    //var cacheValue = keyPair.Value.transform.Find("Text").gameObject;
-                    var cacheFPSText = keyPair.Value.transform.Find("Trust Text").gameObject;
-                    var cachePingText = keyPair.Value.transform.Find("Performance Text").gameObject;
-                    var cacheNet = keyPair.Key._playerNet;
-                    if (cacheFPSText.active && cachePingText.active)
-                    {
-                        // ty louky ily
-                        cacheFPSText.GetComponent<TextMeshProUGUI>().text =
-                            $"FPS:{MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -99, 999)}";
-
-                        cachePingText.GetComponent<TextMeshProUGUI>().text =
-                            $"PING:{cacheNet.prop_Int16_0}";
-                    }
-                }
-
-                yield return new WaitForSeconds(1f);
-            }
         }
 
         public static void NameplateBlanketPatch(PlayerNameplate instance)

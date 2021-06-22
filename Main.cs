@@ -1,30 +1,35 @@
-﻿using MelonLoader;
-
-namespace NameplateStats
+﻿namespace NameplateStats
 {
+    using MelonLoader;
+
     public class Main : MelonMod
     {
         public static Main Instance { get; private set; }
 
-        private int _scenesLoaded;
+        private byte? _scenesLoaded;
         
         public override void OnApplicationStart()
         {
             Instance = this;
+            Prefs.OnStart();
             Patches.DoPatches();
         }
 
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
-            if (_scenesLoaded > 2) return;
-            _scenesLoaded++;
-            if (_scenesLoaded != 2)
+            if (_scenesLoaded is <= 2)
             {
-                Nameplate.OnSceneChanged(); 
-                return;
+                _scenesLoaded++;
+                if (_scenesLoaded == 2) // UiManagerInit
+                {
+                    Nameplate.Start();
+                    Prefs.ForceUpdateListeners();
+                    _scenesLoaded=null;
+                }
             }
-            
-            Nameplate.Start();
+            else Nameplate.OnSceneChanged(); //Wipe playerlist because changing worlds
         }
+
+        public override void OnPreferencesSaved() => Prefs.UpdateListeners();
     }
 }
