@@ -42,6 +42,7 @@ namespace NameplateStats
                     
                     PingFPSObjectRef.name = "FPSPingReference";
                     PingFPSObjectRef.SetActive(false);
+                    Object.DontDestroyOnLoad(PingFPSObjectRef);
                 }
                 
                 if (!playerNameplate.transform.Find("Contents/FPSPing"))
