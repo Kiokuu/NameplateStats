@@ -51,7 +51,7 @@ namespace NameplateStats
                         playerNameplate.transform.Find("Contents/").transform);
                     newStuff.name = "FPSPing";
                     
-                    newStuff.transform.localPosition = new Vector3(0, 60, 0);
+                    newStuff.transform.localPosition = new Vector3(0, 30, 0);
                     
                     var text = newStuff.transform.Find("FPS Text").GetComponent<TextMeshProUGUI>();
                     text.text = "FPS:000";

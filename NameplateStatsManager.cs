@@ -11,14 +11,15 @@
     public class NameplateStatsManager : MonoBehaviour
     {
         public NameplateStatsManager(IntPtr ptr) : base(ptr) {}
-
-
+        private readonly Vector3 quickMenuOpenPosition = new(0, 60, 0);
+        private readonly Vector3 quickMenuClosePosition = new(0, 30, 0);
+        private bool needToMoveNameplates;
         private void Start()
         {
             MelonLogger.Msg("Starting 'NameplateStatsManager'");
         }
 
-        private DateTime intervalCheck = DateTime.UtcNow;
+        private DateTime intervalCheck;
         private void LateUpdate()
         {
             if (DateTime.UtcNow < intervalCheck) return;
@@ -57,7 +58,7 @@
                 {
                     if (keyPair.Key._player == null)
                     {
-                        MelonLogger.Msg("Removing player");
+                        //MelonLogger.Msg("Removing player");
                         EntriesToRemove.Add(keyPair.Key);
                     }
 
@@ -68,29 +69,40 @@
                 //var cacheValue = keyPair.Value.transform.Find("Text").gameObject;
                 var cacheFPSText = keyPair.Value.transform.Find("FPS Text").gameObject;
                 var cachePingText = keyPair.Value.transform.Find("Ping Text").gameObject;
-                var cacheNet = keyPair.Key._playerNet;
-                if (cacheFPSText.active && cachePingText.active)
-                {
-                    // ty louky ily
-                    cacheFPSText.GetComponent<TextMeshProUGUI>().text =
-                        $"FPS:{MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -99, 999)}";
 
-                    cachePingText.GetComponent<TextMeshProUGUI>().text =
-                        $"PING:{cacheNet.prop_Int16_0}";
+                if (!cacheFPSText.active || !cachePingText.active) continue;
+                
+                var cacheNet = keyPair.Key._playerNet;
+                
+                if (needToMoveNameplates && keyPair.Value.transform.localPosition==quickMenuClosePosition)
+                {
+                    keyPair.Value.transform.localPosition = quickMenuOpenPosition;
                 }
+                else if (!needToMoveNameplates && keyPair.Value.transform.localPosition == quickMenuOpenPosition)
+                {
+                    keyPair.Value.transform.localPosition = quickMenuClosePosition;
+                }
+                // ty louky ily
+                cacheFPSText.GetComponent<TextMeshProUGUI>().text =
+                    $"FPS:{MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -99, 999)}";
+
+                cachePingText.GetComponent<TextMeshProUGUI>().text =
+                    $"PING:{cacheNet.prop_Int16_0}";
             }
         }
 
         [HideFromIl2Cpp]
         private void OnQMOpen()
         {
-            
+            needToMoveNameplates = true;
+            NameplateUpdate();
         }
 
         [HideFromIl2Cpp]
         private void OnQMClose()
         {
-            
+            needToMoveNameplates = false;
+            NameplateUpdate();
         }
         
         [HideFromIl2Cpp]
