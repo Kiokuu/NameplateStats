@@ -67,8 +67,8 @@
 
 
                 //var cacheValue = keyPair.Value.transform.Find("Text").gameObject;
-                var cacheFPSText = keyPair.Value.transform.Find("FPS Text").gameObject;
-                var cachePingText = keyPair.Value.transform.Find("Ping Text").gameObject;
+                var cacheFPSText = keyPair.Value.transform.GetChild(0).gameObject;
+                var cachePingText = keyPair.Value.transform.GetChild(1).gameObject;
 
                 if (!cacheFPSText.active || !cachePingText.active) continue;
                 
