@@ -13,9 +13,43 @@
         public NameplateStatsManager(IntPtr ptr) : base(ptr) {}
         private readonly Vector3 quickMenuOpenPosition = new(0, 60, 0);
         private readonly Vector3 quickMenuClosePosition = new(0, 30, 0);
+        
         private bool needToMoveNameplates;
+
+        private Gradient dynamicFPSColourGradient;
+        private Gradient dynamicPingColourGradient;
+        
         private void Start()
         {
+            
+            //TODO allow users to add custom gradient levels and maybe colours too.
+            var colKey = new GradientColorKey[3];
+            colKey[0].color = Color.red;
+            colKey[0].time = 0.0f;
+            colKey[1].color = Color.yellow;
+            colKey[1].time = 0.5f;
+            colKey[2].color = Color.green;
+            colKey[2].time = 1f;
+
+            var alphaKey = new GradientAlphaKey[2];
+            alphaKey[0].alpha = 1.0f;
+            alphaKey[0].time = 0f;
+            alphaKey[1].alpha = 1.0f;
+            alphaKey[1].time = 1f;
+            
+            dynamicFPSColourGradient = new Gradient {colorKeys = colKey, alphaKeys = alphaKey, mode = GradientMode.Blend};
+
+            var colKeyPing = new GradientColorKey[4];
+            colKeyPing[0].color = Color.green;
+            colKeyPing[0].time = 0.0f;
+            colKeyPing[1].color = Color.green;
+            colKeyPing[1].time = 0.25f;
+            colKeyPing[2].color = Color.yellow;
+            colKeyPing[2].time = 0.5f;
+            colKeyPing[3].color = Color.red;
+            colKeyPing[3].time = 1f;
+            
+            dynamicPingColourGradient = new Gradient {colorKeys = colKeyPing, alphaKeys = alphaKey, mode = GradientMode.Blend};
             MelonLogger.Msg("Starting 'NameplateStatsManager'");
         }
 
@@ -82,15 +116,33 @@
                 {
                     keyPair.Value.transform.localPosition = quickMenuClosePosition;
                 }
-                // ty louky ily
-                cacheFPSText.GetComponent<TextMeshProUGUI>().text =
-                    $"FPS:{MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -99, 999)}";
+                
+                var fps = MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -999, 9999);
+                var ping = MelonUtils.Clamp(cacheNet.prop_Int16_0, -999, 9999);
 
-                cachePingText.GetComponent<TextMeshProUGUI>().text =
-                    $"PING:{cacheNet.prop_Int16_0}";
+                var cacheFPSTextComponent = cacheFPSText.GetComponent<TextMeshProUGUI>();
+                var cachePingTextComponent = cachePingText.GetComponent<TextMeshProUGUI>();
+                // ty louky ily
+                cacheFPSTextComponent.text =
+                    $"FPS:{fps}";
+
+                cachePingTextComponent.text =
+                    $"PING:{ping}";
+
+                switch (Prefs.DynamicColour)
+                {
+                    case true:
+                        cacheFPSTextComponent.color = dynamicFPSColourGradient.Evaluate((float)fps/Prefs.GoodFPS);
+                        cachePingTextComponent.color = dynamicPingColourGradient.Evaluate((float)ping/Prefs.BadPing);
+                        break;
+                    case false when cacheFPSTextComponent.color != Prefs.StaticColour:
+                        cacheFPSTextComponent.color = Prefs.StaticColour;
+                        cachePingTextComponent.color = Prefs.StaticColour;
+                        break;
+                }
             }
         }
-
+        
         [HideFromIl2Cpp]
         private void OnQMOpen()
         {

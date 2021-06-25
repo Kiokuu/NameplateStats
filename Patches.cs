@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using MelonLoader;
@@ -25,7 +24,7 @@ namespace NameplateStats
                     postfix: new HarmonyMethod(typeof(Patches).GetMethod(nameof(NameplateBlanketPatch))));
             }
             
-            MelonLogger.Msg($"Patched Nameplate Methods: {String.Join(", ",nameplateMethods.Select(methodName=>methodName.Name))}");
+            MelonLogger.Msg($"Patched Nameplate Methods: {string.Join(", ",nameplateMethods.Select(methodName=>methodName.Name))}");
         }
         
         //"borrowed" from nameplate king https://github.com/ddakebono/BTKSANameplateFix/blob/6a150d520e6a49e2e1ea3484ec673899380f9ccb/BTKSANameplateMod.cs#L715
