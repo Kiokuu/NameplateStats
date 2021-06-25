@@ -22,6 +22,7 @@
         private void Start()
         {
             
+            //TODO allow users to add custom gradient levels and maybe colours too.
             var colKey = new GradientColorKey[3];
             colKey[0].color = Color.red;
             colKey[0].time = 0.0f;
@@ -128,12 +129,17 @@
                 cachePingTextComponent.text =
                     $"PING:{ping}";
 
-                if (Prefs.DynamicColour)
+                switch (Prefs.DynamicColour)
                 {
-                    cacheFPSTextComponent.color = dynamicFPSColourGradient.Evaluate((float)fps/60); // will change to prefs
-                    cachePingTextComponent.color = dynamicPingColourGradient.Evaluate((float)ping/300);
+                    case true:
+                        cacheFPSTextComponent.color = dynamicFPSColourGradient.Evaluate((float)fps/Prefs.GoodFPS);
+                        cachePingTextComponent.color = dynamicPingColourGradient.Evaluate((float)ping/Prefs.BadPing);
+                        break;
+                    case false when cacheFPSTextComponent.color != Prefs.StaticColour:
+                        cacheFPSTextComponent.color = Prefs.StaticColour;
+                        cachePingTextComponent.color = Prefs.StaticColour;
+                        break;
                 }
-                //else if(!Prefs.DynamicColour && )
             }
         }
         

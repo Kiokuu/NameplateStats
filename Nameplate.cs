@@ -60,7 +60,7 @@ namespace NameplateStats
                     
             newStuff.SetActive(true);
             PlayerText.Add(player, newStuff);
-            MelonLogger.Msg($"Added {player._player.name}");
+            MelonLogger.Msg($"Added {player.prop_Player_0.prop_String_0}");
 
         }
 
