@@ -21,6 +21,7 @@
         
         private void Start()
         {
+            MelonLogger.Msg("Starting 'NameplateStatsManager'");
             
             //TODO allow users to add custom gradient levels and maybe colours too.
             var colKey = new GradientColorKey[3];
@@ -50,7 +51,6 @@
             colKeyPing[3].time = 1f;
             
             dynamicPingColourGradient = new Gradient {colorKeys = colKeyPing, alphaKeys = alphaKey, mode = GradientMode.Blend};
-            MelonLogger.Msg("Starting 'NameplateStatsManager'");
         }
 
         private DateTime intervalCheck;
@@ -132,25 +132,12 @@
         }
         
         [HideFromIl2Cpp]
-        private void OnQMOpen()
-        {
-            needToMoveNameplates = true;
-        }
-
-        [HideFromIl2Cpp]
-        private void OnQMClose()
-        {
-            needToMoveNameplates = false;
-        }
-        
-        [HideFromIl2Cpp]
         public bool QuickMenuOpen
         {
             [HideFromIl2Cpp]
             set
             {
-                if (value) OnQMOpen();
-                else OnQMClose();
+                needToMoveNameplates = value;
                 NameplateUpdate();
             }
         }
