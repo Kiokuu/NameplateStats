@@ -52,11 +52,11 @@ namespace NameplateStats
                     
             var text = newStuff.transform.Find("FPS Text").GetComponent<TextMeshProUGUI>();
             text.text = "FPS:000";
-            text.color = Color.green;
+            text.color = Prefs.StaticColour;
 
             text = newStuff.transform.Find("Ping Text").GetComponent<TextMeshProUGUI>();
             text.text = "Ping:0000";
-            text.color = Color.green;
+            text.color = Prefs.StaticColour;
                     
             newStuff.SetActive(true);
             PlayerText.Add(player, newStuff);
