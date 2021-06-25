@@ -6,7 +6,7 @@
     {
         public static void Start()
         {
-            var objectListener = GameObject.Find("UserInterface/QuickMenu/QuickModeTabs").AddComponent<ObjectListener>();
+            var objectListener = GameObject.Find("UserInterface/QuickMenu/QuickMenu_NewElements").AddComponent<ObjectListener>();
             var managerObject = new GameObject("NameplateStatsManager");
             Object.DontDestroyOnLoad(managerObject);
             var managerComponent = managerObject.AddComponent<NameplateStatsManager>();
