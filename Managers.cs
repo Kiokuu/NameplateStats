@@ -4,15 +4,16 @@
 
     public class Managers
     {
+        public static NameplateStatsManager NameplateStatsManager;
         public static void Start()
         {
             var objectListener = GameObject.Find("UserInterface/QuickMenu/QuickMenu_NewElements").AddComponent<ObjectListener>();
             var managerObject = new GameObject("NameplateStatsManager");
             Object.DontDestroyOnLoad(managerObject);
-            var managerComponent = managerObject.AddComponent<NameplateStatsManager>();
+            NameplateStatsManager = managerObject.AddComponent<NameplateStatsManager>();
 
-            objectListener.OnEnableEvent += () => { managerComponent.QuickMenuOpen = true; };
-            objectListener.OnDisableEvent += () => { managerComponent.QuickMenuOpen = false; };
+            objectListener.OnEnableEvent += () => { NameplateStatsManager.QuickMenuOpen = true; };
+            objectListener.OnDisableEvent += () => { NameplateStatsManager.QuickMenuOpen = false; };
         }
     }
 }
