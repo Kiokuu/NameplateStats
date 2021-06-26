@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace NameplateStats
 {
@@ -29,6 +30,11 @@ namespace NameplateStats
             //TODO Implement Ping/FPS Listeners, enable/disable the visibility individually in nameplate stats
             //PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
             //FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
+
+            if (IsBTKSANameplateModPresent = MelonHandler.Mods.Any(m => m.Info.Name == "BTKSANameplateMod" || m.Info.Name == "BTKCompanionLoader")) // untested companionloader
+            {
+                MelonLogger.Msg("BTKSANameplateMod/BTKCompanion detected! enabling colour matching functionality!");
+            };
             _CachedColour = new Color32(255, 255, 255, 255);
         }
 
@@ -99,6 +105,8 @@ namespace NameplateStats
         
         //private static MelonPreferences_Entry<short> _DynamicColouringBadFPS;
         //private static MelonPreferences_Entry<short> _DynamicColouringGoodPing;
+
+        public static bool IsBTKSANameplateModPresent;
         public static short GoodFPS => MelonUtils.Clamp<short>(_DynamicColouringGoodFPS.Value, 0, 9999);
         public static short BadPing => MelonUtils.Clamp<short>(_DynamicColouringBadPing.Value, 0, 9999);
         //TODO Implement proper scaling for dynamic colours
