@@ -18,11 +18,11 @@ namespace NameplateStats
             EnabledListener = new PreferencesStateListener(Enabled, () =>
             {
                 Patches.DoPatches();
-                //Managers.NameplateStatsManager.enabled = true;
+                Managers.NameplateStatsManager.enabled = true;
             }, () =>
             {
                 Patches.Unpatch();
-                //Managers.NameplateStatsManager.enabled = false;
+                Managers.NameplateStatsManager.enabled = false;
             });
             PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
             FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });

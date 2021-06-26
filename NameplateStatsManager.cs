@@ -1,4 +1,7 @@
-﻿namespace NameplateStats
+﻿using System.Linq;
+using VRC;
+
+namespace NameplateStats
 {
     using System;
     using System.Collections.Generic;
@@ -71,7 +74,21 @@
         }
         private void OnDisable()
         {
-            CleanupDict();
+            
+            foreach (KeyValuePair<VRCPlayer,GameObject> keyPair in PlayerText)
+            {
+                DestroyImmediate(keyPair.Value);
+            }
+            PlayerText.Clear();
+            
+        }
+
+        private void OnEnable()
+        {
+            foreach (VRCPlayer player in PlayerManager.prop_PlayerManager_0.prop_ArrayOf_Player_0.Select(ply => ply.prop_VRCPlayer_0))
+            {
+                Patches.OnVRCPlayerAwake(player);
+            }
         }
 
         [HideFromIl2Cpp]
