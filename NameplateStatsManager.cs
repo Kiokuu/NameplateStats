@@ -1,4 +1,7 @@
-﻿namespace NameplateStats
+﻿using System.Linq;
+using VRC;
+
+namespace NameplateStats
 {
     using System;
     using System.Collections.Generic;
@@ -21,6 +24,7 @@
         
         private void Start()
         {
+            MelonLogger.Msg("Starting 'NameplateStatsManager'");
             
             //TODO allow users to add custom gradient levels and maybe colours too.
             var colKey = new GradientColorKey[3];
@@ -50,7 +54,6 @@
             colKeyPing[3].time = 1f;
             
             dynamicPingColourGradient = new Gradient {colorKeys = colKeyPing, alphaKeys = alphaKey, mode = GradientMode.Blend};
-            MelonLogger.Msg("Starting 'NameplateStatsManager'");
         }
 
         private DateTime intervalCheck;
@@ -61,46 +64,50 @@
             NameplateUpdate();
         }
 
+        private void CleanupDict()
+        {
+            if (EntriesToRemove.Count <= 0) return;
+            foreach (var player in EntriesToRemove)
+            {
+                PlayerText.Remove(player);
+            }
+        }
         private void OnDisable()
         {
-            if (EntriesToRemove.Count > 0)
+            
+            foreach (KeyValuePair<VRCPlayer,GameObject> keyPair in PlayerText)
             {
-                foreach (VRCPlayer player in EntriesToRemove)
-                {
-                    PlayerText.Remove(player);
-                }
+                DestroyImmediate(keyPair.Value);
+            }
+            PlayerText.Clear();
+            
+        }
+
+        private void OnEnable()
+        {
+            foreach (VRCPlayer player in PlayerManager.prop_PlayerManager_0.prop_ArrayOf_Player_0.Select(ply => ply.prop_VRCPlayer_0))
+            {
+                Patches.OnVRCPlayerAwake(player);
             }
         }
 
         [HideFromIl2Cpp]
         private void NameplateUpdate()
         {
-            if (EntriesToRemove.Count > 0)
-            {
-                foreach (VRCPlayer player in EntriesToRemove)
-                {
-                    PlayerText.Remove(player);
-                }
-            }
-
+            CleanupDict();
             if (Locked) return;
- 
-                
+
             foreach (KeyValuePair<VRCPlayer, GameObject> keyPair in PlayerText)
             {
                 if (!AdditionalChecks(keyPair.Key))
                 {
                     if (keyPair.Key._player == null)
                     {
-                        //MelonLogger.Msg("Removing player");
                         EntriesToRemove.Add(keyPair.Key);
                     }
-
                     continue;
                 }
 
-
-                //var cacheValue = keyPair.Value.transform.Find("Text").gameObject;
                 var cacheFPSText = keyPair.Value.transform.GetChild(0).gameObject;
                 var cachePingText = keyPair.Value.transform.GetChild(1).gameObject;
 
@@ -117,17 +124,15 @@
                     keyPair.Value.transform.localPosition = quickMenuClosePosition;
                 }
                 
+                //from https://github.com/loukylor/VRC-Mods/blob/c3a9b723a1ddb3cf17ae38737648720034e12c6e/PlayerList/Entries/PlayerEntry.cs#L164+L165
                 var fps = MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -999, 9999);
                 var ping = MelonUtils.Clamp(cacheNet.prop_Int16_0, -999, 9999);
 
                 var cacheFPSTextComponent = cacheFPSText.GetComponent<TextMeshProUGUI>();
                 var cachePingTextComponent = cachePingText.GetComponent<TextMeshProUGUI>();
-                // ty louky ily
-                cacheFPSTextComponent.text =
-                    $"FPS:{fps}";
-
-                cachePingTextComponent.text =
-                    $"PING:{ping}";
+                
+                cacheFPSTextComponent.text = $"FPS:{fps}";
+                cachePingTextComponent.text = $"PING:{ping}";
 
                 switch (Prefs.DynamicColour)
                 {
@@ -144,29 +149,14 @@
         }
         
         [HideFromIl2Cpp]
-        private void OnQMOpen()
-        {
-            needToMoveNameplates = true;
-            NameplateUpdate();
-        }
-
-        [HideFromIl2Cpp]
-        private void OnQMClose()
-        {
-            needToMoveNameplates = false;
-            NameplateUpdate();
-        }
-        
-        [HideFromIl2Cpp]
         public bool QuickMenuOpen
         {
             [HideFromIl2Cpp]
             set
             {
-                if (value) OnQMOpen();
-                else OnQMClose();
+                needToMoveNameplates = value;
+                NameplateUpdate();
             }
-            // set what happens after QM is open
         }
     }
 }

@@ -15,41 +15,49 @@ namespace NameplateStats
             ClassInjector.RegisterTypeInIl2Cpp<ObjectListener>();
             RegisterPreferences();
 
-            EnabledListener = new PreferencesStateListener(Enabled, () => { }, () => { });
-            PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
-            FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
-            DynamicColourListener = new PreferencesStateListener(DynamicColour, () => { }, () => { });
+            EnabledListener = new PreferencesStateListener(Enabled, () =>
+            {
+                MelonLogger.Msg("Enabling Nameplatestats! If you are in lobby, nameplates may take some time to appear!");
+                Patches.DoPatches();
+                Managers.NameplateStatsManager.enabled = true;
+            }, () =>
+            {
+                MelonLogger.Msg("Disabling Nameplatestats!");
+                Patches.Unpatch();
+                Managers.NameplateStatsManager.enabled = false;
+            });
+            //TODO Implement Ping/FPS Listeners, enable/disable the visibility individually in nameplate stats
+            //PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
+            //FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
             _CachedColour = new Color32(255, 255, 255, 255);
         }
 
         public static void ForceUpdateListeners() // On VRCUiManagerInit
         {
             EnabledListener.ForceUpdate(Enabled);
-            PingListener.ForceUpdate(Ping);
-            FPSListener.ForceUpdate(FPS);
-            DynamicColourListener.ForceUpdate(DynamicColour);
+            //PingListener.ForceUpdate(Ping);
+            //FPSListener.ForceUpdate(FPS);
         }
 
         public static void UpdateListeners()
         {
             EnabledListener.Update(Enabled);
-            PingListener.Update(Ping);
-            FPSListener.Update(FPS);
-            DynamicColourListener.Update(DynamicColour);
+            //PingListener.Update(Ping);
+            //FPSListener.Update(FPS);
         }
 
         private static PreferencesStateListener EnabledListener;
-        private static PreferencesStateListener PingListener;
-        private static PreferencesStateListener FPSListener;
-        private static PreferencesStateListener DynamicColourListener;
+        //private static PreferencesStateListener PingListener;
+        //private static PreferencesStateListener FPSListener;
 
 
         private static void RegisterPreferences()
         {
             var cat = MelonPreferences.CreateCategory("NameplateStats");
+            
             _Enabled = cat.CreateEntry("Enabled", true);
-            _Ping = cat.CreateEntry("Ping", true);
-            _FPS = cat.CreateEntry("FPS", true);
+            //_Ping = cat.CreateEntry("Ping", true);
+            //_FPS = cat.CreateEntry("FPS", true);
             _DynamicColour = cat.CreateEntry("DynamicColour", true, "Dynamic Colour",
                 "Enable colouring of the stats dependant on value (green = good, yellow = ok, red = bad");
             _UpdateTime = cat.CreateEntry("NameplateUpdateTime", (short) 1000, "Nameplate Update Time (ms)",
@@ -64,18 +72,19 @@ namespace NameplateStats
 
             _DynamicColouringGoodFPS = cat.CreateEntry("DynColour_GoodFPS", (short) 60, "Dynamic Colouring - Good FPS",
                 "If Dynamic Colouring Enabled: The Value For Good FPS");
+            /*            
             _DynamicColouringBadFPS = cat.CreateEntry("DynColour_BadFPS", (short) 20, "Dynamic Colouring - Bad FPS",
                 "If Dynamic Colouring Enabled: The Value For Bad FPS");
-
             _DynamicColouringGoodPing = cat.CreateEntry("DynColour_GoodPing", (short) 69,
                 "Dynamic Colouring - Good Ping", "If Dynamic Colouring Enabled: The Value For Good Ping");
+            */
             _DynamicColouringBadPing = cat.CreateEntry("DynColour_BadPing", (short) 300, "Dynamic Colouring - Bad Ping",
                 "If Dynamic Colouring Enabled: The Value For Bad Ping");
         }
 
         private static MelonPreferences_Entry<bool> _Enabled;
-        private static MelonPreferences_Entry<bool> _Ping;
-        private static MelonPreferences_Entry<bool> _FPS;
+        //private static MelonPreferences_Entry<bool> _Ping;
+        //private static MelonPreferences_Entry<bool> _FPS;
         private static MelonPreferences_Entry<bool> _DynamicColour;
         private static MelonPreferences_Entry<short> _UpdateTime;
 
@@ -86,20 +95,19 @@ namespace NameplateStats
         private static Color32 _CachedColour;
 
         private static MelonPreferences_Entry<short> _DynamicColouringGoodFPS;
-        private static MelonPreferences_Entry<short> _DynamicColouringBadFPS;
-
-        private static MelonPreferences_Entry<short> _DynamicColouringGoodPing;
         private static MelonPreferences_Entry<short> _DynamicColouringBadPing;
-
-
+        
+        //private static MelonPreferences_Entry<short> _DynamicColouringBadFPS;
+        //private static MelonPreferences_Entry<short> _DynamicColouringGoodPing;
         public static short GoodFPS => MelonUtils.Clamp<short>(_DynamicColouringGoodFPS.Value, 0, 9999);
-        public static short BadFPS => MelonUtils.Clamp<short>(_DynamicColouringBadFPS.Value, 0, 9999);
-        public static short GoodPing => MelonUtils.Clamp<short>(_DynamicColouringGoodPing.Value, 0, 9999);
         public static short BadPing => MelonUtils.Clamp<short>(_DynamicColouringBadPing.Value, 0, 9999);
+        //TODO Implement proper scaling for dynamic colours
+        //public static short BadFPS => MelonUtils.Clamp<short>(_DynamicColouringBadFPS.Value, 0, 9999);
+        //public static short GoodPing => MelonUtils.Clamp<short>(_DynamicColouringGoodPing.Value, 0, 9999);
         
         public static bool Enabled => _Enabled.Value;
-        public static bool Ping => _Ping.Value;
-        public static bool FPS => _FPS.Value;
+        //public static bool Ping => _Ping.Value;
+        //public static bool FPS => _FPS.Value;
         public static bool DynamicColour => _DynamicColour.Value;
         public static short UpdateTime =>  MelonUtils.Clamp<short>(_UpdateTime.Value,50,30000);
 
