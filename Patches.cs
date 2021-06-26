@@ -26,6 +26,13 @@ namespace NameplateStats
             
             MelonLogger.Msg($"Patched Nameplate Methods: {string.Join(", ",nameplateMethods.Select(methodName=>methodName.Name))}");
         }
+
+        public static void Unpatch()
+        {
+            var harmonyInstance = Main.Instance.HarmonyInstance;
+            harmonyInstance.UnpatchAll();
+            MelonLogger.Msg("Unpatched VRC.Player.Awake and nameplate methods!");
+        }
         
         //"borrowed" from nameplate king https://github.com/ddakebono/BTKSANameplateFix/blob/6a150d520e6a49e2e1ea3484ec673899380f9ccb/BTKSANameplateMod.cs#L715
         public static void OnVRCPlayerAwake(VRCPlayer __instance)

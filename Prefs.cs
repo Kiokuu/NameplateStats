@@ -15,7 +15,15 @@ namespace NameplateStats
             ClassInjector.RegisterTypeInIl2Cpp<ObjectListener>();
             RegisterPreferences();
 
-            EnabledListener = new PreferencesStateListener(Enabled, () => { }, () => { });
+            EnabledListener = new PreferencesStateListener(Enabled, () =>
+            {
+                Patches.DoPatches();
+                //Managers.NameplateStatsManager.enabled = true;
+            }, () =>
+            {
+                Patches.Unpatch();
+                //Managers.NameplateStatsManager.enabled = false;
+            });
             PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
             FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
             DynamicColourListener = new PreferencesStateListener(DynamicColour, () => { }, () => { });
@@ -47,6 +55,7 @@ namespace NameplateStats
         private static void RegisterPreferences()
         {
             var cat = MelonPreferences.CreateCategory("NameplateStats");
+            
             _Enabled = cat.CreateEntry("Enabled", true);
             _Ping = cat.CreateEntry("Ping", true);
             _FPS = cat.CreateEntry("FPS", true);

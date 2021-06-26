@@ -12,7 +12,7 @@
         {
             Instance = this;
             Prefs.OnStart();
-            Patches.DoPatches();
+            //Patches.DoPatches();
         }
 
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
