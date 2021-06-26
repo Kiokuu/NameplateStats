@@ -61,6 +61,9 @@
         <Reference Include="UnityEngine.CoreModule, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.UI, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\Libs\Managed\UnityEngine.UI.dll</HintPath>
+        </Reference>
         <Reference Include="VRCCore-Standalone, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\VRCCore-Standalone.dll</HintPath>
         </Reference>
