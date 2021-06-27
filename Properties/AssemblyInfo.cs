@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using MelonLoader;
 
 [assembly: MelonGame("VRChat","VRChat")]
-[assembly: MelonInfo(typeof(NameplateStats.Main),"NameplateStats","0.0.1","Yato + Dawn","https://www.github.com/Kiokuu/NameplateStats")]
+[assembly: MelonInfo(typeof(NameplateStats.Main),"NameplateStats","1.0.0","Yato + Dawn","https://www.github.com/Kiokuu/NameplateStats")]
 [assembly: MelonColor(ConsoleColor.DarkCyan)]
 
 // General Information about an assembly is controlled through the following 
