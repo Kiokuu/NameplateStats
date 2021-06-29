@@ -16,9 +16,10 @@ namespace NameplateStats
         public NameplateStatsManager(IntPtr ptr) : base(ptr) {}
         private readonly Vector3 quickMenuOpenPosition = new(0, 60, 0);
         private readonly Vector3 quickMenuClosePosition = new(0, 30, 0);
+        private readonly Vector3 quickMenuCloseIconOnlyPosition = new(0, 45, 0);
+        private bool QMOpen;
+        private bool AlwaysQMStats;
         
-        private bool needToMoveNameplates;
-
         private Gradient dynamicFPSColourGradient;
         private Gradient dynamicPingColourGradient;
         
@@ -91,6 +92,7 @@ namespace NameplateStats
             }
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         [HideFromIl2Cpp]
         private void NameplateUpdate()
         {
@@ -122,20 +124,26 @@ namespace NameplateStats
                     {
                         cacheNameplateStatSlice.color = whatColourShouldIBe;
                     }
+                    
                 }
 
                 var cacheNet = keyPair.Key._playerNet;
-                
-                if (needToMoveNameplates && keyPair.Value.transform.localPosition==quickMenuClosePosition)
+
+                // this is hell, need to optimize later.
+                var localPosition = keyPair.Value.transform.localPosition;
+                localPosition = QMOpen switch
                 {
-                    keyPair.Value.transform.localPosition = quickMenuOpenPosition;
-                }
-                else if (!needToMoveNameplates && keyPair.Value.transform.localPosition == quickMenuOpenPosition)
-                {
-                    keyPair.Value.transform.localPosition = quickMenuClosePosition;
-                }
+                    true or true when localPosition != quickMenuOpenPosition =>
+                        quickMenuOpenPosition,
+                    false when !AlwaysQMStats && !Prefs.IconsOnlyMode &&
+                               localPosition == quickMenuOpenPosition => quickMenuClosePosition,
+                    false when !AlwaysQMStats && Prefs.IconsOnlyMode &&
+                               localPosition != quickMenuCloseIconOnlyPosition =>
+                        quickMenuCloseIconOnlyPosition,
+                    _ => localPosition
+                };
+                keyPair.Value.transform.localPosition = localPosition;
                 
-                //if(cacheNameplateStatSlice.)
                 //from https://github.com/loukylor/VRC-Mods/blob/c3a9b723a1ddb3cf17ae38737648720034e12c6e/PlayerList/Entries/PlayerEntry.cs#L164+L165
                 var fps = MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -999, 9999);
                 var ping = MelonUtils.Clamp(cacheNet.prop_Int16_0, -999, 9999);
@@ -166,7 +174,18 @@ namespace NameplateStats
             [HideFromIl2Cpp]
             set
             {
-                needToMoveNameplates = value;
+                QMOpen = value;
+                NameplateUpdate();
+            }
+        }
+
+        [HideFromIl2Cpp]
+        public bool AlwaysShowQuickMenuStats
+        {
+            [HideFromIl2Cpp]
+            set
+            {
+                AlwaysQMStats = value;
                 NameplateUpdate();
             }
         }

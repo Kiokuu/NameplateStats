@@ -24,6 +24,7 @@
                 {
                     Nameplate.Start();
                     Prefs.ForceUpdateListeners();
+                    if(Prefs.IsBTKSANameplateModPresent) Prefs.OnLateStart();
                     _scenesLoaded=null;
                 }
             }

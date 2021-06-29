@@ -18,12 +18,12 @@ namespace NameplateStats
 
             EnabledListener = new PreferencesStateListener(Enabled, () =>
             {
-                MelonLogger.Msg("Enabling Nameplatestats! If you are in lobby, nameplates may take some time to appear!");
+                MelonLogger.Msg("Enabling NameplateStats! If you are in lobby, nameplates may take some time to appear!");
                 Patches.DoPatches();
                 Managers.NameplateStatsManager.enabled = true;
             }, () =>
             {
-                MelonLogger.Msg("Disabling Nameplatestats!");
+                MelonLogger.Msg("Disabling NameplateStats!");
                 Patches.Unpatch();
                 Managers.NameplateStatsManager.enabled = false;
             });
@@ -38,6 +38,19 @@ namespace NameplateStats
             _CachedColour = new Color32(255, 255, 255, 255);
         }
 
+        public static void OnLateStart()
+        {
+            if (!IsBTKSANameplateModPresent) return;
+            _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKSANameplateFix")
+                .GetEntry<bool>("nmAlwaysShowQuickInfo");
+            IsAlwaysShowQuickInfoOnListener = new PreferencesStateListener(IsAlwaysShowQuickInfoOn, () =>
+            {
+                Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = true;
+            }, () =>
+            {
+                Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = false;
+            }, true);
+        }
         public static void ForceUpdateListeners() // On VRCUiManagerInit
         {
             EnabledListener.ForceUpdate(Enabled);
@@ -47,12 +60,15 @@ namespace NameplateStats
 
         public static void UpdateListeners()
         {
-            EnabledListener.Update(Enabled);
+            EnabledListener.Update(Enabled); 
+            IsAlwaysShowQuickInfoOnListener.Update(IsAlwaysShowQuickInfoOn);
             //PingListener.Update(Ping);
             //FPSListener.Update(FPS);
         }
 
         private static PreferencesStateListener EnabledListener;
+
+        private static PreferencesStateListener IsAlwaysShowQuickInfoOnListener;
         //private static PreferencesStateListener PingListener;
         //private static PreferencesStateListener FPSListener;
 
@@ -102,11 +118,13 @@ namespace NameplateStats
 
         private static MelonPreferences_Entry<short> _DynamicColouringGoodFPS;
         private static MelonPreferences_Entry<short> _DynamicColouringBadPing;
-        
+        private static MelonPreferences_Entry<bool> _IsAlwaysShowQuickInfoOn;
         //private static MelonPreferences_Entry<short> _DynamicColouringBadFPS;
         //private static MelonPreferences_Entry<short> _DynamicColouringGoodPing;
 
         public static bool IsBTKSANameplateModPresent;
+        public static bool IsAlwaysShowQuickInfoOn => _IsAlwaysShowQuickInfoOn.Value;
+        
         public static short GoodFPS => MelonUtils.Clamp<short>(_DynamicColouringGoodFPS.Value, 0, 9999);
         public static short BadPing => MelonUtils.Clamp<short>(_DynamicColouringBadPing.Value, 0, 9999);
         //TODO Implement proper scaling for dynamic colours
@@ -131,7 +149,10 @@ namespace NameplateStats
 
                 return _CachedColour;
             }
-
         }
+
+        public static bool IconsOnlyMode =>
+            MonoBehaviourPublicObSiLi1CoObBoStBoSiUnique.field_Private_Static_EnumNPublicSealedvaStIcHiMA5vUnique_0 ==
+            MonoBehaviourPublicObSiLi1CoObBoStBoSiUnique.EnumNPublicSealedvaStIcHiMA5vUnique.Icons;
     }
 }
