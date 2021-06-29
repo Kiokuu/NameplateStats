@@ -12,9 +12,7 @@ namespace NameplateStats
         public event Action OnEnableEvent;
         [method: HideFromIl2Cpp]
         public event Action OnDisableEvent;
-        [method: HideFromIl2Cpp]
         private void OnEnable() => OnEnableEvent?.Invoke();
-        [method: HideFromIl2Cpp]
         private void OnDisable() => OnDisableEvent?.Invoke();
     }
 }

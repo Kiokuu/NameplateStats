@@ -92,7 +92,6 @@ namespace NameplateStats
             }
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         [HideFromIl2Cpp]
         private void NameplateUpdate()
         {
@@ -128,21 +127,21 @@ namespace NameplateStats
                 }
 
                 var cacheNet = keyPair.Key._playerNet;
-
-                // this is hell, need to optimize later.
-                var localPosition = keyPair.Value.transform.localPosition;
-                localPosition = QMOpen switch
+                
+                if ((QMOpen || AlwaysQMStats) && keyPair.Value.transform.localPosition!=quickMenuOpenPosition)
                 {
-                    true or true when localPosition != quickMenuOpenPosition =>
-                        quickMenuOpenPosition,
-                    false when !AlwaysQMStats && !Prefs.IconsOnlyMode &&
-                               localPosition == quickMenuOpenPosition => quickMenuClosePosition,
-                    false when !AlwaysQMStats && Prefs.IconsOnlyMode &&
-                               localPosition != quickMenuCloseIconOnlyPosition =>
-                        quickMenuCloseIconOnlyPosition,
-                    _ => localPosition
-                };
-                keyPair.Value.transform.localPosition = localPosition;
+                    keyPair.Value.transform.localPosition = quickMenuOpenPosition;
+                }
+                else if (!QMOpen && !AlwaysQMStats && !Prefs.IconsOnlyMode && keyPair.Value.transform.localPosition==quickMenuOpenPosition)
+                {
+                    keyPair.Value.transform.localPosition = quickMenuClosePosition;
+                }
+                else if (!QMOpen && !AlwaysQMStats && Prefs.IconsOnlyMode &&
+                         keyPair.Value.transform.localPosition != quickMenuCloseIconOnlyPosition)
+                {
+                    keyPair.Value.transform.localPosition = quickMenuCloseIconOnlyPosition;
+                }
+                //if(cacheNameplateStatSlice.)
                 //from https://github.com/loukylor/VRC-Mods/blob/c3a9b723a1ddb3cf17ae38737648720034e12c6e/PlayerList/Entries/PlayerEntry.cs#L164+L165
                 var fps = MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -999, 9999);
                 var ping = MelonUtils.Clamp(cacheNet.prop_Int16_0, -999, 9999);
