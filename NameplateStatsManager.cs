@@ -143,7 +143,6 @@ namespace NameplateStats
                     _ => localPosition
                 };
                 keyPair.Value.transform.localPosition = localPosition;
-                
                 //from https://github.com/loukylor/VRC-Mods/blob/c3a9b723a1ddb3cf17ae38737648720034e12c6e/PlayerList/Entries/PlayerEntry.cs#L164+L165
                 var fps = MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -999, 9999);
                 var ping = MelonUtils.Clamp(cacheNet.prop_Int16_0, -999, 9999);

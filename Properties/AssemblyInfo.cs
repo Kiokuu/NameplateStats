@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using HarmonyLib;
 using MelonLoader;
 
 [assembly: MelonGame("VRChat","VRChat")]
 [assembly: MelonInfo(typeof(NameplateStats.Main),"NameplateStats","1.0.1","Yato + Dawn","https://www.github.com/Kiokuu/NameplateStats")]
 [assembly: MelonColor(ConsoleColor.DarkCyan)]
-
+[assembly: MelonPriority(Priority = Priority.LowerThanNormal)]
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
