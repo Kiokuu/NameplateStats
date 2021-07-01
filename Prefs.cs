@@ -60,8 +60,8 @@ namespace NameplateStats
 
         public static void UpdateListeners()
         {
-            EnabledListener.Update(Enabled); 
-            IsAlwaysShowQuickInfoOnListener.Update(IsAlwaysShowQuickInfoOn);
+            EnabledListener.Update(Enabled);
+            if (_IsAlwaysShowQuickInfoOn != null) IsAlwaysShowQuickInfoOnListener.Update(IsAlwaysShowQuickInfoOn);
             //PingListener.Update(Ping);
             //FPSListener.Update(FPS);
         }
