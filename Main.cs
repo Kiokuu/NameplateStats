@@ -1,16 +1,18 @@
-﻿namespace NameplateStats
+﻿using HarmonyLib;
+
+namespace NameplateStats
 {
     using MelonLoader;
 
     public class Main : MelonMod
     {
-        public static Main Instance { get; private set; }
+        public static HarmonyLib.Harmony Instance { get; private set; }
 
         private byte? _scenesLoaded = 0;
         
         public override void OnApplicationStart()
         {
-            Instance = this;
+            Instance = new HarmonyLib.Harmony("NameplateStats");
             Prefs.OnStart();
             //Patches.DoPatches();
         }

@@ -9,7 +9,7 @@ namespace NameplateStats
     {
         public static void DoPatches()
         {
-            var harmonyInstance = Main.Instance.HarmonyInstance;
+            var harmonyInstance = Main.Instance;
             harmonyInstance.Patch(typeof(VRCPlayer).GetMethod("Awake"),
                 postfix: new HarmonyMethod(typeof(Patches).GetMethod(nameof(OnVRCPlayerAwake)))
             );
@@ -29,8 +29,8 @@ namespace NameplateStats
 
         public static void Unpatch()
         {
-            var harmonyInstance = Main.Instance.HarmonyInstance;
-            harmonyInstance.UnpatchAll();
+            var harmonyInstance = Main.Instance;
+            harmonyInstance.UnpatchAll("NameplateStats");
             MelonLogger.Msg("Unpatched VRC.Player.Awake and nameplate methods!");
         }
         
