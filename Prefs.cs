@@ -4,12 +4,14 @@ using UnityEngine;
 namespace NameplateStats
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Dawn.Utilities;
     using MelonLoader;
     using UnhollowerRuntimeLib;
 
     public static class Prefs
     {
+        [SuppressMessage("ReSharper", "AssignmentInConditionalExpression")]
         public static void OnStart()
         {
             ClassInjector.RegisterTypeInIl2Cpp<NameplateStatsManager>();
@@ -30,19 +32,43 @@ namespace NameplateStats
             //TODO Implement Ping/FPS Listeners, enable/disable the visibility individually in nameplate stats
             //PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
             //FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
-
-            if (IsBTKSANameplateModPresent = MelonHandler.Mods.Any(m => m.Info.Name == "BTKSANameplateMod" || m.Info.Name == "BTKCompanionLoader")) // untested companionloader
+            var BonoMod = MelonHandler.Mods.Where(m => m.Info.Name is "BTKSANameplateMod" or "BTKCompanionLoader").ToArray();
+            if (IsBTKSANameplateModPresent = BonoMod.Any())
             {
-                MelonLogger.Msg("BTKSANameplateMod/BTKCompanion detected! enabling colour matching functionality!");
-            };
+                if (BonoMod.Any(m => m.Info.Name == "BTKSANameplateMod"))
+                {
+                    MelonLogger.Msg("BTKSANameplateMod detected! enabling colour matching functionality!");
+                    isNameplateFixSAPresent = true;
+                }
+
+                if (BonoMod.Any(m => m.Info.Name == "BTKCompanionLoader"))
+                {
+                    MelonLogger.Msg("BTKCompanion detected! enabling colour matching functionality!");
+                    isCompanionPresent = true;
+                }
+            }
             _CachedColour = new Color32(255, 255, 255, 255);
         }
 
+        private static bool? isNameplateFixSAPresent = false;
+        private static bool? isCompanionPresent = false;
         public static void OnLateStart()
         {
             if (!IsBTKSANameplateModPresent) return;
-            _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKSANameplateFix")
-                .GetEntry<bool>("nmAlwaysShowQuickInfo");
+            if (isCompanionPresent!.Value)
+            {
+                _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKCompanionNP")
+                    .GetEntry<bool>("nmAlwaysShowQuickInfo");
+            }
+            else if (isNameplateFixSAPresent!.Value)
+            {
+                _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKSANameplateFix")
+                    .GetEntry<bool>("nmAlwaysShowQuickInfo");
+            }
+            isNameplateFixSAPresent = null;
+            isCompanionPresent = null; // Yeeted out since we don't need this lurking in memory.
+            
+            
             IsAlwaysShowQuickInfoOnListener = new PreferencesStateListener(IsAlwaysShowQuickInfoOn, () =>
             {
                 Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = true;
@@ -124,7 +150,7 @@ namespace NameplateStats
 
         public static bool IsBTKSANameplateModPresent;
         public static bool IsAlwaysShowQuickInfoOn => _IsAlwaysShowQuickInfoOn.Value;
-        
+
         public static short GoodFPS => MelonUtils.Clamp<short>(_DynamicColouringGoodFPS.Value, 0, 9999);
         public static short BadPing => MelonUtils.Clamp<short>(_DynamicColouringBadPing.Value, 0, 9999);
         //TODO Implement proper scaling for dynamic colours
