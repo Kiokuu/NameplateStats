@@ -1,15 +1,12 @@
-﻿using System.Linq;
-using UnityEngine;
-
-namespace NameplateStats
+﻿namespace NameplateStats
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
-    using Dawn.Utilities;
     using MelonLoader;
     using UnhollowerRuntimeLib;
+    using System.Linq;
+    using UnityEngine;
 
-    public static class Prefs
+    public class Prefs
     {
         [SuppressMessage("ReSharper", "AssignmentInConditionalExpression")]
         public static void OnStart()
@@ -18,17 +15,9 @@ namespace NameplateStats
             ClassInjector.RegisterTypeInIl2Cpp<ObjectListener>();
             RegisterPreferences();
 
-            EnabledListener = new PreferencesStateListener(Enabled, () =>
-            {
-                MelonLogger.Msg("Enabling NameplateStats! If you are in lobby, nameplates may take some time to appear!");
-                Patches.DoPatches();
-                Managers.NameplateStatsManager.enabled = true;
-            }, () =>
-            {
-                MelonLogger.Msg("Disabling NameplateStats!");
-                Patches.Unpatch();
-                Managers.NameplateStatsManager.enabled = false;
-            });
+            
+            _Enabled.OnValueChanged += (b, b1) => ToggleEnable(b1);
+
             //TODO Implement Ping/FPS Listeners, enable/disable the visibility individually in nameplate stats
             //PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
             //FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
@@ -67,34 +56,33 @@ namespace NameplateStats
             }
             isNameplateFixSAPresent = null;
             isCompanionPresent = null; // Yeeted out since we don't need this lurking in memory.
-            
-            
-            IsAlwaysShowQuickInfoOnListener = new PreferencesStateListener(IsAlwaysShowQuickInfoOn, () =>
-            {
-                Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = true;
-            }, () =>
-            {
-                Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = false;
-            }, true);
+
+            _IsAlwaysShowQuickInfoOn.OnValueChanged +=
+                (b, b1) => Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = b1;
+        }
+
+        public static void ToggleEnable(bool enable)
+        {
+            MelonLogger.Msg($"{(enable ? "Enabling" : "Disabling")} NameplateStats.");
+            Patches.TogglePatches(enable);
+            Managers.NameplateStatsManager.enabled = enable;
         }
         public static void ForceUpdateListeners() // On VRCUiManagerInit
         {
-            EnabledListener.ForceUpdate(Enabled);
+            //EnabledListener.ForceUpdate(Enabled);
             //PingListener.ForceUpdate(Ping);
             //FPSListener.ForceUpdate(FPS);
         }
 
-        public static void UpdateListeners()
+       /* public static void UpdateListeners()
         {
             EnabledListener.Update(Enabled);
             if (_IsAlwaysShowQuickInfoOn != null) IsAlwaysShowQuickInfoOnListener.Update(IsAlwaysShowQuickInfoOn);
             //PingListener.Update(Ping);
             //FPSListener.Update(FPS);
         }
-
-        private static PreferencesStateListener EnabledListener;
-
-        private static PreferencesStateListener IsAlwaysShowQuickInfoOnListener;
+        */
+        //private static PreferencesStateListener IsAlwaysShowQuickInfoOnListener;
         //private static PreferencesStateListener PingListener;
         //private static PreferencesStateListener FPSListener;
 

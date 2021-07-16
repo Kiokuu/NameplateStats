@@ -1,9 +1,8 @@
-﻿using UnhollowerBaseLib.Attributes;
-
-namespace NameplateStats
+﻿namespace NameplateStats
 {
     using System;
     using UnityEngine;
+    using UnhollowerBaseLib.Attributes;
 
     public class ObjectListener : MonoBehaviour
     {

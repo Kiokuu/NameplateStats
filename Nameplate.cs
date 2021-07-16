@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using MelonLoader;
-using TMPro;
-using UnityEngine;
-using Object = UnityEngine.Object;
-
-namespace NameplateStats
+﻿namespace NameplateStats
 {
+    using System.Collections.Generic;
+    using MelonLoader;
+    using TMPro;
+    using UnityEngine;
+    using Object = UnityEngine.Object;
+    
     public class Nameplate
     {
-        public static GameObject PingFPSObjectRef;
+        private static GameObject PingFPSObjectRef;
 
         public static readonly Dictionary<VRCPlayer, GameObject> PlayerText = new();
         public static readonly HashSet<VRCPlayer> EntriesToRemove = new();
@@ -24,7 +24,7 @@ namespace NameplateStats
         public static void OnAvatarReady(VRCPlayer player)
         {
             if (!AdditionalChecks(player)) return;
-            PlayerNameplate playerNameplate = player.field_Public_PlayerNameplate_0;
+            var playerNameplate = player.field_Public_PlayerNameplate_0;
             if (!playerNameplate.isActiveAndEnabled) return;
             if (!PingFPSObjectRef)
             {
