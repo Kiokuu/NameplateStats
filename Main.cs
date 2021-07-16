@@ -20,7 +20,6 @@
                 if (_scenesLoaded == 2) // UiManagerInit
                 {
                     Nameplate.Start();
-                    Prefs.ForceUpdateListeners();
                     if(Prefs.IsBTKSANameplateModPresent) Prefs.OnLateStart();
                     _scenesLoaded=null;
                 }

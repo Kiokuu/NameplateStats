@@ -15,12 +15,10 @@
             ClassInjector.RegisterTypeInIl2Cpp<ObjectListener>();
             RegisterPreferences();
 
-            
-            _Enabled.OnValueChanged += (b, b1) => ToggleEnable(b1);
+            _Enabled.OnValueChanged += (_, b1) => ToggleEnable(b1);
 
             //TODO Implement Ping/FPS Listeners, enable/disable the visibility individually in nameplate stats
-            //PingListener = new PreferencesStateListener(Ping, () => { }, () => { });
-            //FPSListener = new PreferencesStateListener(FPS, () => { }, () => { });
+            
             var BonoMod = MelonHandler.Mods.Where(m => m.Info.Name is "BTKSANameplateMod" or "BTKCompanionLoader").ToArray();
             if (IsBTKSANameplateModPresent = BonoMod.Any())
             {
@@ -58,7 +56,7 @@
             isCompanionPresent = null; // Yeeted out since we don't need this lurking in memory.
 
             _IsAlwaysShowQuickInfoOn.OnValueChanged +=
-                (b, b1) => Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = b1;
+                (_, b1) => Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = b1;
         }
 
         public static void ToggleEnable(bool enable)
@@ -67,25 +65,6 @@
             Patches.TogglePatches(enable);
             Managers.NameplateStatsManager.enabled = enable;
         }
-        public static void ForceUpdateListeners() // On VRCUiManagerInit
-        {
-            //EnabledListener.ForceUpdate(Enabled);
-            //PingListener.ForceUpdate(Ping);
-            //FPSListener.ForceUpdate(FPS);
-        }
-
-       /* public static void UpdateListeners()
-        {
-            EnabledListener.Update(Enabled);
-            if (_IsAlwaysShowQuickInfoOn != null) IsAlwaysShowQuickInfoOnListener.Update(IsAlwaysShowQuickInfoOn);
-            //PingListener.Update(Ping);
-            //FPSListener.Update(FPS);
-        }
-        */
-        //private static PreferencesStateListener IsAlwaysShowQuickInfoOnListener;
-        //private static PreferencesStateListener PingListener;
-        //private static PreferencesStateListener FPSListener;
-
 
         private static void RegisterPreferences()
         {
