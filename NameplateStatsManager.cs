@@ -1,14 +1,12 @@
-﻿using System.Linq;
-using VRC;
-
-namespace NameplateStats
+﻿namespace NameplateStats
 {
     using System;
-    using System.Collections.Generic;
     using MelonLoader;
     using TMPro;
     using UnhollowerBaseLib.Attributes;
     using UnityEngine;
+    using System.Linq;
+    using VRC;
     using static Nameplate;
 
     public class NameplateStatsManager : MonoBehaviour
@@ -76,7 +74,7 @@ namespace NameplateStats
         private void OnDisable()
         {
             
-            foreach (KeyValuePair<VRCPlayer,GameObject> keyPair in PlayerText)
+            foreach (var keyPair in PlayerText)
             {
                 DestroyImmediate(keyPair.Value);
             }
@@ -86,7 +84,7 @@ namespace NameplateStats
 
         private void OnEnable()
         {
-            foreach (VRCPlayer player in PlayerManager.prop_PlayerManager_0.prop_ArrayOf_Player_0.Select(ply => ply.prop_VRCPlayer_0))
+            foreach (var player in PlayerManager.prop_PlayerManager_0.prop_ArrayOf_Player_0.Select(ply => ply.prop_VRCPlayer_0))
             {
                 Patches.OnVRCPlayerAwake(player);
             }
@@ -98,7 +96,7 @@ namespace NameplateStats
             CleanupDict();
             if (Locked) return;
 
-            foreach (KeyValuePair<VRCPlayer, GameObject> keyPair in PlayerText)
+            foreach (var keyPair in PlayerText)
             {
                 if (!AdditionalChecks(keyPair.Key))
                 {

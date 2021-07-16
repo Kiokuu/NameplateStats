@@ -11,7 +11,7 @@
             var managerObject = new GameObject("NameplateStatsManager");
             Object.DontDestroyOnLoad(managerObject);
             NameplateStatsManager = managerObject.AddComponent<NameplateStatsManager>();
-
+            Prefs.ToggleEnable(Prefs.Enabled);
             objectListener.OnEnableEvent += () => { NameplateStatsManager.QuickMenuOpen = true; };
             objectListener.OnDisableEvent += () => { NameplateStatsManager.QuickMenuOpen = false; };
         }

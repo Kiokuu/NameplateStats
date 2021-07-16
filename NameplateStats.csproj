@@ -75,7 +75,6 @@
 		<Compile Include="NameplateStatsManager.cs" />
 		<Compile Include="ObjectListener.cs" />
 		<Compile Include="Patches.cs" />
-		<Compile Include="PreferenceStateListener.cs" />
 		<Compile Include="Prefs.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
