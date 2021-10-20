@@ -7,7 +7,9 @@
         public static NameplateStatsManager NameplateStatsManager;
         public static void Start()
         {
-            var objectListener = GameObject.Find("UserInterface/QuickMenu/QuickMenu_NewElements").AddComponent<ObjectListener>();
+            var objectListener = GameObject.Find("UserInterface/Canvas_QuickMenu(Clone)/").AddComponent<ObjectListener>();
+            
+            
             var managerObject = new GameObject("NameplateStatsManager");
             Object.DontDestroyOnLoad(managerObject);
             NameplateStatsManager = managerObject.AddComponent<NameplateStatsManager>();

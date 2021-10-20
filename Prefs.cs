@@ -36,7 +36,7 @@
             }
             _CachedColour = new Color32(255, 255, 255, 255);
         }
-
+        
         private static bool? isNameplateFixSAPresent = false;
         private static bool? isCompanionPresent = false;
         public static void OnLateStart()
@@ -143,9 +143,12 @@
                 return _CachedColour;
             }
         }
+        
 
         public static bool IconsOnlyMode =>
-            MonoBehaviourPublicObSiLi1CoObBoStBoSiUnique.field_Private_Static_EnumNPublicSealedvaStIcHiMA5vUnique_0 ==
-            MonoBehaviourPublicObSiLi1CoObBoStBoSiUnique.EnumNPublicSealedvaStIcHiMA5vUnique.Icons;
+            MonoBehaviourPublicISettingsOb1ObBoSi1NaSiBoStUnique
+                .field_Private_Static_MonoBehaviourPublicISettingsOb1ObBoSi1NaSiBoStUnique_0
+                .field_Private_Observable_1_NameplateMode_0 == VRC.DataModel.NameplateMode.Icons;
+
     }
 }

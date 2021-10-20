@@ -33,38 +33,44 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="Assembly-CSharp, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
-        <Reference Include="Il2Cppmscorlib, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="DataModel, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\Libs\Managed\DataModel.dll</HintPath>
+        </Reference>
+        <Reference Include="Il2Cppmscorlib, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\Il2Cppmscorlib.dll</HintPath>
         </Reference>
-        <Reference Include="MelonLoader, Version=0.4.0.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="MelonLoader, Version=0.4.3.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Core\MelonLoader.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
-        <Reference Include="UnhollowerBaseLib, Version=0.4.15.1, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="UnhollowerBaseLib, Version=0.4.15.4, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\UnhollowerBaseLib.dll</HintPath>
         </Reference>
         <Reference Include="UnhollowerRuntimeLib, Version=0.4.10.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\UnhollowerRuntimeLib.dll</HintPath>
         </Reference>
-        <Reference Include="Unity.TextMeshPro, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\Unity.TextMeshPro.dll</HintPath>
         </Reference>
-        <Reference Include="UnityEngine, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\Managed\UnityEngine.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
-        <Reference Include="UnityEngine.UI, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="UnityEngine.UI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
-        <Reference Include="VRCCore-Standalone, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="VRC.UI.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\Libs\Managed\VRC.UI.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="VRC.UI.Elements, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\Libs\Managed\VRC.UI.Elements.dll</HintPath>
+        </Reference>
+        <Reference Include="VRCCore-Standalone, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\Libs\Managed\VRCCore-Standalone.dll</HintPath>
         </Reference>
     </ItemGroup>
