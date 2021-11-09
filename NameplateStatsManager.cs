@@ -1,4 +1,6 @@
-﻿namespace NameplateStats
+﻿using System.Collections.Generic;
+
+namespace NameplateStats
 {
     using System;
     using MelonLoader;
@@ -121,24 +123,11 @@
                     {
                         cacheNameplateStatSlice.color = whatColourShouldIBe;
                     }
-                    
                 }
-
+                
                 var cacheNet = keyPair.Key._playerNet;
                 
-                if ((QMOpen || AlwaysQMStats) && keyPair.Value.transform.localPosition!=quickMenuOpenPosition)
-                {
-                    keyPair.Value.transform.localPosition = quickMenuOpenPosition;
-                }
-                else if (!QMOpen && !AlwaysQMStats && !Prefs.IconsOnlyMode && keyPair.Value.transform.localPosition==quickMenuOpenPosition)
-                {
-                    keyPair.Value.transform.localPosition = quickMenuClosePosition;
-                }
-                else if (!QMOpen && !AlwaysQMStats && Prefs.IconsOnlyMode &&
-                         keyPair.Value.transform.localPosition != quickMenuCloseIconOnlyPosition)
-                {
-                    keyPair.Value.transform.localPosition = quickMenuCloseIconOnlyPosition;
-                }
+                UpdateNameplatePosition(keyPair.Value.transform);
                 
                 //from https://github.com/loukylor/VRC-Mods/blob/c3a9b723a1ddb3cf17ae38737648720034e12c6e/PlayerList/Entries/PlayerEntry.cs#L164+L165
                 var fps = MelonUtils.Clamp((int) (1000f / cacheNet.field_Private_Byte_0), -999, 9999);
@@ -163,7 +152,23 @@
                 }
             }
         }
-        
+
+        private void UpdateNameplatePosition(Transform nameplateTransform)
+        {
+            if (QMOpen || AlwaysQMStats)
+            {
+                nameplateTransform.localPosition = quickMenuOpenPosition;
+            }
+            else if (!QMOpen && !AlwaysQMStats && !Prefs.IconsOnlyMode)
+            {
+                nameplateTransform.localPosition = quickMenuClosePosition;
+            }
+            else if (!QMOpen && !AlwaysQMStats && Prefs.IconsOnlyMode)
+            {
+                nameplateTransform.localPosition = quickMenuCloseIconOnlyPosition;
+            }
+        }
+
         [HideFromIl2Cpp]
         public bool QuickMenuOpen
         {
