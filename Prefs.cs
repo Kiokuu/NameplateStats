@@ -146,9 +146,9 @@
         
 
         public static bool IconsOnlyMode =>
-            MonoBehaviourPublicISettingsOb1ObBoSi1NaSiBoStUnique
-                .field_Private_Static_MonoBehaviourPublicISettingsOb1ObBoSi1NaSiBoStUnique_0
-                .field_Private_Observable_1_NameplateMode_0 == VRC.DataModel.NameplateMode.Icons;
+            VRC.UI.Settings
+                .field_Private_Static_Settings_0
+                .field_Private_Observable_1_NameplateMode_0.field_Protected_TYPE_0 == VRC.DataModel.NameplateMode.Icons;
 
     }
 }
