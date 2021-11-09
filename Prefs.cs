@@ -3,6 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using MelonLoader;
     using UnhollowerRuntimeLib;
+    using VRC;
     using System.Linq;
     using UnityEngine;
 
@@ -144,11 +145,10 @@
             }
         }
         
-
+        public static bool QMInfoShow => NameplateManager.prop_Boolean_0;
+        
         public static bool IconsOnlyMode =>
-            VRC.UI.Settings
-                .field_Private_Static_Settings_0
-                .field_Private_Observable_1_NameplateMode_0.field_Protected_TYPE_0 == VRC.DataModel.NameplateMode.Icons;
+            NameplateManager.prop_NameplateMode_0 == NameplateManager.NameplateMode.Icons;
 
     }
 }
