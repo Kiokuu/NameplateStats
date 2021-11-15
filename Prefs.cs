@@ -145,10 +145,14 @@
             }
         }
         
-        public static bool QMInfoShow => NameplateManager.prop_Boolean_0;
+        public static bool QMInfoShow => MonoBehaviourPublicMaObMaSiLi1CoObBoTeUnique.prop_Boolean_0;
         
+        //public static bool IconsOnlyMode =>
+        //    NameplateManager.prop_NameplateMode_0 == NameplateManager.NameplateMode.Icons;
+
         public static bool IconsOnlyMode =>
-            NameplateManager.prop_NameplateMode_0 == NameplateManager.NameplateMode.Icons;
+            MonoBehaviourPublicMaObMaSiLi1CoObBoTeUnique.field_Private_Static_EnumNPublicSealedvaStIcHiMA5vUnique_0 ==
+                MonoBehaviourPublicMaObMaSiLi1CoObBoTeUnique.EnumNPublicSealedvaStIcHiMA5vUnique.Icons;
 
     }
 }
