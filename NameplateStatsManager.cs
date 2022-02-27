@@ -8,7 +8,6 @@ namespace NameplateStats
     using UnhollowerBaseLib.Attributes;
     using UnityEngine;
     using System.Linq;
-    using VRC;
     using static Nameplate;
 
     public class NameplateStatsManager : MonoBehaviour
@@ -86,7 +85,7 @@ namespace NameplateStats
 
         private void OnEnable()
         {
-            foreach (var player in PlayerManager.prop_PlayerManager_0.prop_ArrayOf_Player_0.Select(ply => ply.prop_VRCPlayer_0))
+            foreach (var player in VRC.PlayerManager.prop_PlayerManager_0.prop_ArrayOf_Player_0.Select(ply => ply.prop_VRCPlayer_0))
             {
                 Patches.OnVRCPlayerAwake(player);
             }
@@ -127,6 +126,7 @@ namespace NameplateStats
                 
                 var cacheNet = keyPair.Key._playerNet;
                 
+
                 UpdateNameplatePosition(keyPair.Value.transform);
                 
                 //from https://github.com/loukylor/VRC-Mods/blob/c3a9b723a1ddb3cf17ae38737648720034e12c6e/PlayerList/Entries/PlayerEntry.cs#L164+L165

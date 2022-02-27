@@ -3,9 +3,10 @@
     using System.Diagnostics.CodeAnalysis;
     using MelonLoader;
     using UnhollowerRuntimeLib;
-    using VRC;
     using System.Linq;
     using UnityEngine;
+    using NameplateManager = MonoBehaviourPublicMaObMaSiLi1CoObBoStUnique;
+    using Nameplate_EnumNameplateMode = MonoBehaviourPublicMaObMaSiLi1CoObBoStUnique.EnumNPublicSealedvaStIcHiMA5vUnique;
 
     public class Prefs
     {
@@ -147,8 +148,7 @@
         
         public static bool QMInfoShow => NameplateManager.prop_Boolean_0;
         
-        public static bool IconsOnlyMode =>
-            NameplateManager.prop_NameplateMode_0 == NameplateManager.NameplateMode.Icons;
+        public static bool IconsOnlyMode => NameplateManager.prop_EnumNPublicSealedvaStIcHiMA5vUnique_0 == Nameplate_EnumNameplateMode.Icons;
         
     }
 }
