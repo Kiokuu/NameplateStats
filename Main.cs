@@ -20,8 +20,8 @@ namespace NameplateStats
 
         private IEnumerator WaitForUiManager()
         {
-            while (VRCUiManager.field_Private_Static_VRCUiManager_0 == null) yield return null;
-            while (Object.FindObjectOfType<VRC.UI.Elements.QuickMenu>() == null) yield return null;   
+            while (VRCUiManager.field_Private_Static_VRCUiManager_0 == null) yield return new UnityEngine.WaitForSeconds(1);
+            while (Object.FindObjectOfType<VRC.UI.Elements.QuickMenu>() == null) yield return new UnityEngine.WaitForSeconds(0.5);
             Nameplate.Start();
             if(Prefs.IsBTKSANameplateModPresent) Prefs.OnLateStart();
         }
