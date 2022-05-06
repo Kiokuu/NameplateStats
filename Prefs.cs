@@ -42,22 +42,25 @@
         private static bool? isCompanionPresent = false;
         public static void OnLateStart()
         {
-            if (!IsBTKSANameplateModPresent) return;
-            if (isCompanionPresent!.Value)
+            //if (!IsBTKSANameplateModPresent) return; //if we return here, static fields "isNameplateFixSAPresent" and "isCompanionPresent" will never be set to null
+            if (IsBTKSANameplateModPresent)
             {
-                _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKCompanionNP")
-                    .GetEntry<bool>("nmAlwaysShowQuickInfo");
-            }
-            else if (isNameplateFixSAPresent!.Value)
-            {
-                _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKSANameplateFix")
-                    .GetEntry<bool>("nmAlwaysShowQuickInfo");
+                if (isCompanionPresent == true)
+                {
+                    _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKCompanionNP")
+                        .GetEntry<bool>("nmAlwaysShowQuickInfo");
+                }
+                else if (isNameplateFixSAPresent == true)
+                {
+                    _IsAlwaysShowQuickInfoOn = MelonPreferences.GetCategory("BTKSANameplateFix")
+                        .GetEntry<bool>("nmAlwaysShowQuickInfo");
+                }
+                Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = _IsAlwaysShowQuickInfoOn.Value;
+                _IsAlwaysShowQuickInfoOn.OnValueChanged +=
+                (oldVal, newVal) => Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = newVal;
             }
             isNameplateFixSAPresent = null;
             isCompanionPresent = null; // Yeeted out since we don't need this lurking in memory.
-
-            _IsAlwaysShowQuickInfoOn.OnValueChanged +=
-                (_, b1) => Managers.NameplateStatsManager.AlwaysShowQuickMenuStats = b1;
         }
 
         public static void ToggleEnable(bool enable)
