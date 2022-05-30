@@ -86,7 +86,7 @@ namespace NameplateStats
 
         private void OnEnable()
         {
-            foreach (var player in PlayerManager.prop_PlayerManager_0.prop_ArrayOf_Player_0.Select(ply => ply.prop_VRCPlayer_0))
+            foreach (var player in PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray().Select(ply => ply.prop_VRCPlayer_0))
             {
                 Patches.OnVRCPlayerAwake(player);
             }
